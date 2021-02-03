@@ -17,7 +17,7 @@ const photoReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        photoList: action.photos,
+        photoList: action.result.data,
       };
     case type.GET_PHOTOS_FAILED:
       return {
@@ -25,6 +25,24 @@ const photoReducer = (state = initialState, action) => {
         loading: false,
         error: action.error,
       };
+
+    case type.ADD_PHOTOS_REQUESTED:
+      return {
+        ...state,
+        loading: true,
+      };
+    case type.ADD_PHOTOS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        photoList: [...state.photoList, action.result.data],
+      };
+    // case type.ADD_PHOTOS_FAILED:
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     error: action.error,
+    //   };
     default:
       return state;
   }
