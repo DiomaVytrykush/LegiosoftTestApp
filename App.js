@@ -10,7 +10,7 @@ const Tab = createBottomTabNavigator();
 const App = () => {
   return (
     <NavigationContainer >
-      <Tab.Navigator initialRouteName="NewPhoto"
+      <Tab.Navigator initialRouteName="Galery"
         screenOptions={({route}) => ({
           tabBarIcon: ({focused}) => {
             if (route.name === 'Galery') {
