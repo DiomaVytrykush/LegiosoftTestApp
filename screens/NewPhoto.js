@@ -15,6 +15,7 @@ import Indicator from '../components/Indicator';
 
 const NewPhoto = ({navigation}) => {
   const dispatch = useDispatch();
+
   const loading = useSelector((state) => state.photoReducer.loading);
 
   //Pattern function for ImagePicker
@@ -60,7 +61,6 @@ const NewPhoto = ({navigation}) => {
   return (
     <Root>
       <Container>
-        <Indicator loading={loading} />
         <Content
           contentContainerStyle={{
             flex: 1,
@@ -72,6 +72,7 @@ const NewPhoto = ({navigation}) => {
             <Text>Upload a photo</Text>
           </Button>
         </Content>
+        <Indicator loading={loading} />
       </Container>
     </Root>
   );

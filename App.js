@@ -2,12 +2,17 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Icon} from 'native-base';
+import SplashScreen from 'react-native-splash-screen';
 import Galery from './screens/Galery';
 import NewPhoto from './screens/NewPhoto';
 
 const Tab = createBottomTabNavigator();
 
 const App = () => {
+  React.useEffect(() => {
+    SplashScreen.hide();
+  }, []);
+
   return (
     <NavigationContainer>
       <Tab.Navigator

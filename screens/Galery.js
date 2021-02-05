@@ -1,12 +1,14 @@
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Container, Content, Text} from 'native-base';
+import {Image, RefreshControl} from 'react-native';
 import {getPhoto} from '../redux/actions/photo';
 import Indicator from '../components/Indicator';
-import {Image} from 'react-native';
 import Error from '../components/Error';
 
 const Galery = () => {
+  const [refreshing, setRefreshing] = React.useState(false);
+
   const dispatch = useDispatch();
   const photos = useSelector((state) => state.photoReducer.photoList);
   const loading = useSelector((state) => state.photoReducer.loading);
@@ -16,15 +18,30 @@ const Galery = () => {
     dispatch(getPhoto());
   }, []);
 
-  console.log(photos, loading, error);
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    if (photos.length === 0) {
+      try {
+        dispatch(getPhoto());
+        setRefreshing(false);
+      } catch (error) {
+        throw new Error(error);
+      }
+    } else {
+      setRefreshing(false);
+    }
+  }, [refreshing]);
 
   return (
     <Container>
       <Content
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         contentContainerStyle={{
           alignItems: 'center',
         }}>
-        {photos &&
+        {photos.length !== 0 ? (
           photos.map((i) => (
             <Content
               key={i.id}
@@ -45,7 +62,19 @@ const Galery = () => {
               />
               <Text>{new Date(i.createdAt).toLocaleDateString()}</Text>
             </Content>
-          ))}
+          ))
+        ) : (
+          <Container>
+            <Content
+              contentContainerStyle={{
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text>There are no photos yet</Text>
+            </Content>
+          </Container>
+        )}
       </Content>
       <Indicator loading={loading} />
       {error !== null && <Error error={error.message} />}
