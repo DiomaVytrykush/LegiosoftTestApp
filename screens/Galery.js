@@ -1,9 +1,10 @@
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import {Container, Content, Text} from 'native-base';
 import {getPhoto} from '../redux/actions/photo';
-import {Container, Content, Thumbnail, Text} from 'native-base';
-import {View} from 'react-native';
 import Indicator from '../components/Indicator';
+import {Image} from 'react-native';
+import Error from '../components/Error';
 
 const Galery = () => {
   const dispatch = useDispatch();
@@ -19,26 +20,35 @@ const Galery = () => {
 
   return (
     <Container>
-      <Indicator loading={loading} />
       <Content
         contentContainerStyle={{
           alignItems: 'center',
         }}>
         {photos &&
           photos.map((i) => (
-            <View key={i.id} style={{flex: 1, alignItems: 'center'}}>
-              <Thumbnail
-                style={{width: 300, height: 300, margin: 20}}
-                square
-                large
+            <Content
+              key={i.id}
+              contentContainerStyle={{
+                flex: 1,
+                alignItems: 'center',
+                padding: 10,
+              }}>
+              <Image
+                style={{
+                  width: 400,
+                  height: 400,
+                  marginBottom: 10,
+                }}
                 source={{
                   uri: i.avatar,
                 }}
               />
-              <Text>{i.createdAt}</Text>
-            </View>
+              <Text>{new Date(i.createdAt).toLocaleDateString()}</Text>
+            </Content>
           ))}
       </Content>
+      <Indicator loading={loading} />
+      {error !== null && <Error error={error.message} />}
     </Container>
   );
 };

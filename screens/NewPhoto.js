@@ -1,66 +1,41 @@
 import React from 'react';
-import {FlatList, Image, TouchableOpacity} from 'react-native';
+import ImagePicker from 'react-native-image-crop-picker';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   Container,
   Content,
   Button,
   Text,
-  Thumbnail,
-  View,
+  Icon,
   ActionSheet,
   Root,
 } from 'native-base';
+import {addPhoto} from '../redux/actions/photo';
 import Indicator from '../components/Indicator';
-import {useDispatch, useSelector} from 'react-redux';
-import {addPhoto, getPhoto} from '../redux/actions/photo';
-import ImagePicker from 'react-native-image-crop-picker';
 
-const NewPhoto = () => {
-  const [photos, setphotos] = React.useState([]);
-
-  const storephotos = useSelector((state) => state.photoReducer.photoList);
-
+const NewPhoto = ({navigation}) => {
   const dispatch = useDispatch();
+  const loading = useSelector((state) => state.photoReducer.loading);
 
-  React.useEffect(() => {
-    dispatch(getPhoto());
-  }, []);
-
-  const onSelectImage = (image) => {
-    const source = {uri: image.path};
-    let item = {
-      avatar: source,
-      createdAt: Date.now(),
-      content: image.data,
-    };
-    setphotos([...photos, item]);
-  };
-
-  const takePhotoFromCamera = () => {
-    ImagePicker.openCamera({
+  //Pattern function for ImagePicker
+  const patternPhotoFunc = (method) => {
+    ImagePicker[method]({
       compressImageMaxWidth: 300,
       compressImageMaxHeight: 400,
-      compressImageQuality: 0.7,
       includeBase64: true,
       cropping: false,
-    }).then((image) => {
-      onSelectImage(image);
-    });
+    })
+      .then((image) => {
+        dispatch(addPhoto(image.path, new Date(Date.now())));
+      })
+      .then(() => navigation.navigate('Galery'));
   };
-  const choosePhotoFromLibrary = () => {
-    ImagePicker.openPicker({
-      compressImageMaxWidth: 300,
-      compressImageMaxHeight: 400,
-      compressImageQuality: 0.7,
-      includeBase64: true,
-      cropping: false,
-    }).then((image) => {
-      onSelectImage(image);
-    });
-  };
+
+  const takePhotoFromCamera = () => patternPhotoFunc('openCamera');
+  const choosePhotoFromLibrary = () => patternPhotoFunc('openPicker');
 
   const onClickAddImage = () => {
-    const BUTTONS = ['Take Photo', 'Choose Photo Library', 'Cancel'];
+    const BUTTONS = ['Take a Photo', 'Choose Photo from Library', 'Cancel'];
     ActionSheet.show(
       {
         options: BUTTONS,
@@ -82,38 +57,20 @@ const NewPhoto = () => {
     );
   };
 
-  console.log(photos, storephotos);
-
-  const onClickPushmage = (avatar, createdAt) => {
-    dispatch(addPhoto(avatar, createdAt));
-  };
-
   return (
     <Root>
       <Container>
-        {/* <Indicator loading={loading} /> */}
+        <Indicator loading={loading} />
         <Content
           contentContainerStyle={{
+            flex: 1,
+            justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Button onPress={onClickAddImage}>
-            <Text>Press add image</Text>
+          <Button iconLeft primary onPress={onClickAddImage}>
+            <Icon name="home" />
+            <Text>Upload a photo</Text>
           </Button>
-
-          {photos.map((i) => (
-            <TouchableOpacity
-              onPress={() => onClickPushmage(i.avatar.uri, i.createdAt)}>
-              <Image
-                source={{uri: i.avatar.uri}}
-                style={{
-                  width: 300,
-                  height: 300,
-                  margin: 20,
-                  resizeMode: 'contain',
-                }}
-              />
-            </TouchableOpacity>
-          ))}
         </Content>
       </Container>
     </Root>

@@ -3,7 +3,7 @@ import {call, put, takeEvery} from 'redux-saga/effects';
 
 function* fetchPhotos() {
   try {
-    const url = 'https://60197878fa0b1f0017acd264.mockapi.io/api/v1/photos';
+    const url = 'https://60197878fa0b1f0017acd264.mockapi.io/api/v1/photo';
     const result = yield call(axios.get, url);
     yield put({type: 'GET_PHOTOS_SUCCESS', result});
   } catch (error) {
@@ -16,16 +16,12 @@ export function* getPhotosSaga() {
 }
 
 function* addPhotoFucn(action) {
-  console.log('add a photo', action);
-
   try {
     const url = 'https://60197878fa0b1f0017acd264.mockapi.io/api/v1/photos';
     const result = yield call(axios.post, url, action.payload);
     yield put({type: 'ADD_PHOTOS_SUCCESS', result});
-    console.log('add a photo suucecsess');
   } catch (error) {
-    // yield put({type: 'GET_PHOTOS_FAILED', error});
-    console.log('add a photo error', error);
+    yield put({type: 'ADD_PHOTOS_FAILED', error});
   }
 }
 
