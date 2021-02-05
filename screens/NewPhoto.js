@@ -21,7 +21,7 @@ const NewPhoto = ({navigation}) => {
   const patternPhotoFunc = (method) => {
     ImagePicker[method]({
       compressImageMaxWidth: 300,
-      compressImageMaxHeight: 400,
+      compressImageMaxHeight: 300,
       includeBase64: true,
       cropping: false,
     })

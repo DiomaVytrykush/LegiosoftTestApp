@@ -32,7 +32,7 @@ const Galery = () => {
     } else {
       setRefreshing(false);
     }
-  }, [refreshing]);
+  }, []);
 
   return (
     <Container>
@@ -53,15 +53,15 @@ const Galery = () => {
                 contentContainerStyle={{
                   flex: 1,
                   alignItems: 'center',
+                  margin: 10,
                   padding: 10,
+                  borderBottomWidth: 2,
+                  borderBottomColor: 'black',
                 }}>
-                <Image
-                  style={styles.image}
-                  source={{
-                    uri: i.avatar,
-                  }}
-                />
-                <Text>{new Date(i.createdAt).toLocaleDateString()}</Text>
+                <Image style={styles.image} source={{uri: i.avatar}} />
+                <Text style={styles.date}>
+                  {new Date(i.createdAt).toLocaleDateString()}
+                </Text>
               </Content>
             ))
           ) : (
@@ -86,9 +86,10 @@ const Galery = () => {
 
 const styles = StyleSheet.create({
   image: {
-    width: 400,
-    height: 400,
+    width: 300,
+    height: 300,
     marginBottom: 10,
+    resizeMode: 'contain',
   },
   noPhotosText: {
     fontSize: 18,
@@ -97,6 +98,11 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: 50,
     color: 'black',
+  },
+  date: {
+    fontSize: 20,
+    color: 'black',
+    fontWeight: '700',
   },
 });
 

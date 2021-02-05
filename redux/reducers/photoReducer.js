@@ -36,7 +36,7 @@ const photoReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        photoList: [...state.photoList, action.result.data],
+        photoList: [action.result.data, ...state.photoList],
       };
     case type.ADD_PHOTOS_FAILED:
       return {
