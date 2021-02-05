@@ -15,7 +15,6 @@ import Indicator from '../components/Indicator';
 
 const NewPhoto = ({navigation}) => {
   const dispatch = useDispatch();
-
   const loading = useSelector((state) => state.photoReducer.loading);
 
   //Pattern function for ImagePicker
@@ -61,18 +60,26 @@ const NewPhoto = ({navigation}) => {
   return (
     <Root>
       <Container>
-        <Content
-          contentContainerStyle={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Button iconLeft primary onPress={onClickAddImage}>
-            <Icon name="home" />
-            <Text>Upload a photo</Text>
-          </Button>
-        </Content>
-        <Indicator loading={loading} />
+        {loading ? (
+          <Indicator />
+        ) : (
+          <Content
+            contentContainerStyle={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Button
+              iconLeft
+              dark
+              bordered
+              onPress={onClickAddImage}
+              style={{alignSelf: 'center'}}>
+              <Icon name="md-images" />
+              <Text>Upload a photo</Text>
+            </Button>
+          </Content>
+        )}
       </Container>
     </Root>
   );

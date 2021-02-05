@@ -18,6 +18,7 @@ const App = () => {
       <Tab.Navigator
         initialRouteName="Galery"
         screenOptions={({route}) => ({
+          headerShown: false,
           tabBarIcon: ({focused}) => {
             if (route.name === 'Galery') {
               return <Icon name={focused ? 'md-menu' : 'ios-menu-outline'} />;

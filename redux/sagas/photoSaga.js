@@ -11,11 +11,7 @@ function* fetchPhotos() {
   }
 }
 
-export function* getPhotosSaga() {
-  yield takeEvery('GET_PHOTOS_REQUESTED', fetchPhotos);
-}
-
-function* addPhotoFucn(action) {
+function* postPhotos(action) {
   try {
     const url = 'https://60197878fa0b1f0017acd264.mockapi.io/api/v1/photos';
     const result = yield call(axios.post, url, action.payload);
@@ -25,6 +21,10 @@ function* addPhotoFucn(action) {
   }
 }
 
-export function* addPhotoSaga() {
-  yield takeEvery('ADD_PHOTOS_REQUESTED', addPhotoFucn);
+export function* getPhotosSaga() {
+  yield takeEvery('GET_PHOTOS_REQUESTED', fetchPhotos);
+}
+
+export function* postPhotoSaga() {
+  yield takeEvery('ADD_PHOTOS_REQUESTED', postPhotos);
 }

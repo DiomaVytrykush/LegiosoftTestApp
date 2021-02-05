@@ -1,19 +1,18 @@
 import React from 'react';
-import {ActivityIndicator} from 'react-native';
+import {Container, Content, Spinner} from 'native-base';
 
-const Indicator = ({loading}) => {
+const Indicator = () => {
   return (
-    <ActivityIndicator
-      style={{
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
-      }}
-      animating={loading}
-      color="grey"
-    />
+    <Container>
+      <Content
+        contentContainerStyle={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <Spinner color="darkgrey" />
+      </Content>
+    </Container>
   );
 };
 
